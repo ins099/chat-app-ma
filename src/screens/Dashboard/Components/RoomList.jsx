@@ -27,28 +27,7 @@ const ROOM_LIST = [
 ];
 
 const renderItem = ({ item, index }) => {
-  const { room_name, id } = item;
-  const onPressItem = () => {};
-  return (
-    <TouchableOpacity
-      style={[styles.roundItem, index === 0 && styles.addRoom]}
-      onPress={onPressItem}
-      key={id}
-    >
-      {index === 0 ? (
-        <MaterialCommunityIcons
-          name="plus"
-          color={COLORS.primary}
-          disabled
-          size={ms(30)}
-        />
-      ) : (
-        <TextBig bold textStyle={styles.initialText}>
-          {getInitials(room_name)}
-        </TextBig>
-      )}
-    </TouchableOpacity>
-  );
+  return <RoomItem {...item} index={index} />;
 };
 
 const RoomList = (props) => {
@@ -75,6 +54,37 @@ const RoomList = (props) => {
         />
       </View>
     </>
+  );
+};
+
+const RoomItem = (props) => {
+  const { room_name, id, index } = props;
+
+  const navigation = useNavigation();
+
+  const onPressItem = () => {
+    navigation.navigate("Inbox", { chatId: id });
+  };
+
+  return (
+    <TouchableOpacity
+      style={[styles.roundItem, index === 0 && styles.addRoom]}
+      onPress={onPressItem}
+      key={id}
+    >
+      {index === 0 ? (
+        <MaterialCommunityIcons
+          name="plus"
+          color={COLORS.primary}
+          disabled
+          size={ms(30)}
+        />
+      ) : (
+        <TextBig bold textStyle={styles.initialText}>
+          {getInitials(room_name)}
+        </TextBig>
+      )}
+    </TouchableOpacity>
   );
 };
 

@@ -4,6 +4,7 @@ import SafeAreaWrapper from "../../components/Wrapper/SafeAreaWrapper";
 import { COLORS } from "../../utils/theme";
 import DashHeader from "./Components/DashHeader";
 import RoomList from "./Components/RoomList";
+import ChatList from "./Components/ChatList";
 
 const Dashboard = (props) => {
   const { navigation } = props;
@@ -17,6 +18,7 @@ const Dashboard = (props) => {
       <DashHeader onPressLogout={onPressLogout} userName = "Insaram"/>
       <View style={styles.curvedContainer}>
         <RoomList />
+        <ChatList />
       </View>
     </SafeAreaWrapper>
   );
