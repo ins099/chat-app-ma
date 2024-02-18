@@ -3,12 +3,16 @@ import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const SafeAreaWrapper = (props) => {
-  const { children } = props;
-  return <SafeAreaView style={styles.container}>{children}</SafeAreaView>;
+  const { children, containerStyle } = props;
+  return (
+    <SafeAreaView style={[styles.container, containerStyle]}>
+      {children}
+    </SafeAreaView>
+  );
 };
 
 export default SafeAreaWrapper;
 
 const styles = StyleSheet.create({
-  container: { flex: 1, paddingHorizontal:15, backgroundColor:'white' },
+  container: { flex: 1, paddingHorizontal: 15, backgroundColor: "white" },
 });

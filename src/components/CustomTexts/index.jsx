@@ -3,8 +3,16 @@ import React from "react";
 import { s, ms, vs, mvs } from "react-native-size-matters";
 
 export const TextNormal = (props) => {
-  const { children, textStyle, underline, center, bold, color, ...rest } =
-    props;
+  const {
+    children,
+    textStyle,
+    underline,
+    center,
+    bold,
+    right,
+    color,
+    ...rest
+  } = props;
   return (
     <Text
       style={[
@@ -13,6 +21,7 @@ export const TextNormal = (props) => {
         bold && { fontWeight: "700" },
         underline && { textDecorationLine: "underline" },
         center && { textAlign: "center" },
+        right && { textAlign: "right" },
         color && { color },
         textStyle,
       ]}
@@ -24,8 +33,16 @@ export const TextNormal = (props) => {
 };
 
 export const TextSmall = (props) => {
-  const { children, textStyle, center, underline, bold, color, ...rest } =
-    props;
+  const {
+    children,
+    textStyle,
+    center,
+    underline,
+    bold,
+    color,
+    right,
+    ...rest
+  } = props;
   return (
     <Text
       style={[
@@ -34,6 +51,7 @@ export const TextSmall = (props) => {
         bold && { fontWeight: "700" },
         underline && { textDecorationLine: "underline" },
         center && { textAlign: "center" },
+        right && { textAlign: "right" },
         color && { color },
         textStyle,
       ]}
