@@ -3,12 +3,14 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import AuthStack from "./AuthStack";
 import DashStack from "./DashStack";
+import { useSelector } from "react-redux";
+import { useUser } from "../utils/hooks/useUser";
 
 const RootNavigation = () => {
-  const isUser = true;
+  const { accessToken } = useUser();
   return (
     <NavigationContainer>
-      {isUser ? <DashStack /> : <AuthStack />}
+      {accessToken ? <DashStack /> : <AuthStack />}
     </NavigationContainer>
   );
 };

@@ -41,7 +41,7 @@ const CustomInput = (props) => {
                 onChangeText={(txt) => onChange(txt)}
                 style={[styles.textInputStyle, textInputStyle]}
                 secureTextEntry={isVisible}
-                placeholderTextColor = "lightGrey"
+                placeholderTextColor = "lightgrey"
                 {...textInputProps}
               />
               {secureTextEntry && (

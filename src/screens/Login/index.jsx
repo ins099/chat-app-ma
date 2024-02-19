@@ -8,20 +8,12 @@ import CustomButton from "../../components/CustomButton";
 import { vs } from "react-native-size-matters";
 import DismissWrapper from "../../components/Wrapper/DismissWrapper";
 import { COLORS } from "../../utils/theme";
+import { useLogin } from "../../utils/hooks/useLogin";
 
 const Login = (props) => {
   const { navigation } = props;
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
 
-  console.log({ errors });
-
-  const handleLogin = (data) => {
-    console.log({ data });
-  };
+  const {handleLogin, control} = useLogin()
 
   const onPressSignup = () => {
     navigation.navigate("Register");
@@ -41,6 +33,7 @@ const Login = (props) => {
             name="email"
             label="Email Address"
             placeholder="Enter your email address"
+            keyboardType = "email-address"
           />
           <CustomInput
             control={control}
@@ -52,7 +45,7 @@ const Login = (props) => {
           />
         </View>
         <View style={styles.buttonContainer}>
-          <CustomButton label="Login" onPress={handleSubmit(handleLogin)} />
+          <CustomButton label="Login" onPress={handleLogin} />
         </View>
         <TextSmall center>
           Don't have an account?{" "}

@@ -1,21 +1,22 @@
 import React from "react";
-import { Alert, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import SafeAreaWrapper from "../../components/Wrapper/SafeAreaWrapper";
+import { useUser } from "../../utils/hooks/useUser";
 import { COLORS } from "../../utils/theme";
+import ChatList from "./Components/ChatList";
 import DashHeader from "./Components/DashHeader";
 import RoomList from "./Components/RoomList";
-import ChatList from "./Components/ChatList";
 
 const Dashboard = (props) => {
   const { navigation } = props;
-
-  const onPressLogout = () => {
-    Alert.alert("Logout?", "Are you sure you want to logout?");
-  };
+  const {
+    user: { full_name },
+    onPressLogout,
+  } = useUser();
 
   return (
     <SafeAreaWrapper containerStyle={styles.containerStyle}>
-      <DashHeader onPressLogout={onPressLogout} userName = "Insaram"/>
+      <DashHeader onPressLogout={onPressLogout} userName={full_name} />
       <View style={styles.curvedContainer}>
         <RoomList />
         <ChatList />
@@ -37,7 +38,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 30,
     borderTopLeftRadius: 30,
     flex: 1,
-    paddingHorizontal:20,
-    paddingTop:20
+    paddingHorizontal: 20,
+    paddingTop: 20,
   },
 });

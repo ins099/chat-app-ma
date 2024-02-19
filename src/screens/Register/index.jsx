@@ -1,31 +1,23 @@
-import { Keyboard, StyleSheet, Text, View } from "react-native";
 import React from "react";
-import SafeAreaWrapper from "../../components/Wrapper/SafeAreaWrapper";
-import { TextNormal, TextBig, TextSmall } from "../../components/CustomTexts";
-import CustomInput from "../../components/CustomInput";
 import { useForm } from "react-hook-form";
-import CustomButton from "../../components/CustomButton";
+import { StyleSheet, View } from "react-native";
 import { vs } from "react-native-size-matters";
+import CustomButton from "../../components/CustomButton";
+import CustomInput from "../../components/CustomInput";
+import { TextBig, TextSmall } from "../../components/CustomTexts";
 import DismissWrapper from "../../components/Wrapper/DismissWrapper";
+import SafeAreaWrapper from "../../components/Wrapper/SafeAreaWrapper";
 import { COLORS } from "../../utils/theme";
+import { useRegister } from "../../utils/hooks/useRegister";
 
 const Register = (props) => {
   const { navigation } = props;
 
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
-
-
-  const handleCreateAccount = (data) => {
-    console.log({ data });
-  };
-
+  const { control, handleRegister } = useRegister();
   const onPressLogin = () => {
     navigation.navigate("Login");
   };
+
 
   return (
     <SafeAreaWrapper>
@@ -57,20 +49,11 @@ const Register = (props) => {
             placeholder="Enter your password"
             secureTextEntry={true}
           />
-
-          <CustomInput
-            control={control}
-            rules={PASSWORD_RULES}
-            name="confirm_password"
-            label="Confirm Password"
-            placeholder="Enter your confirm password"
-            secureTextEntry={true}
-          />
         </View>
         <View style={styles.buttonContainer}>
           <CustomButton
             label="Create Account"
-            onPress={handleSubmit(handleCreateAccount)}
+            onPress={handleRegister}
           />
         </View>
 
