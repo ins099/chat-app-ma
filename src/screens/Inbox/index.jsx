@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import React, { useCallback, useState } from "react";
 import SafeAreaWrapper from "../../components/Wrapper/SafeAreaWrapper";
-import { GiftedChat } from "react-native-gifted-chat";
+import { GiftedChat, Send } from "react-native-gifted-chat";
 import ChatHeader from "./components/ChatHeader";
 import Feather from "react-native-vector-icons/Feather";
 import { ms } from "react-native-size-matters";
@@ -28,6 +28,7 @@ const Inbox = () => {
   ]);
 
   const onSend = useCallback((messages = []) => {
+    // console.log({ messages });
     setMessages((previousMessages) =>
       GiftedChat.append(previousMessages, messages)
     );
@@ -47,16 +48,17 @@ const Inbox = () => {
         primaryStyle={{ alignItems: "center" }}
         textInputProps={{ style: styles.textInput }}
         renderSend={(props) => {
-            console.log("SEND PROPS====", JSON.stringify(props,null, 2))
           return (
-            <TouchableOpacity {...props} style={styles.sendContainer} onPress={onSend}>
+            // <TouchableOpacity {...props} style={styles.sendContainer} onPress={()=>onSend(props)}>
+            // </TouchableOpacity>
+            <Send alwaysShowSend {...props} containerStyle={styles.sendContainer}>
               <Feather
                 name="send"
                 size={ms(23)}
                 disabled
                 color={COLORS.primary}
               />
-            </TouchableOpacity>
+            </Send>
           );
         }}
       />
@@ -73,15 +75,15 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     alignItems: "center",
     justifyContent: "center",
-    borderRadius:100,
-    backgroundColor:COLORS.lightblue,
-    paddingRight:2,
-    marginLeft:5
+    borderRadius: 100,
+    backgroundColor: COLORS.lightblue,
+    paddingRight: 2,
+    marginLeft: 5,
   },
   textInputContainerStyle: {
     backgroundColor: "transparent",
     borderTopWidth: 1,
-    borderTopColor:COLORS.primary
+    borderTopColor: COLORS.primary,
   },
   textInput: {
     backgroundColor: "red",
@@ -103,7 +105,7 @@ const styles = StyleSheet.create({
     // borderRadius: 40,
     padding: 10,
     backgroundColor: COLORS.white,
-    borderRightWidth:1,
-    borderColor:COLORS.lightblue
+    borderRightWidth: 1,
+    borderColor: COLORS.lightblue,
   },
 });
