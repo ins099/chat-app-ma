@@ -26,10 +26,10 @@ export const chatRoomApi = createApi({
       providesTags: ["Rooms"],
     }),
 
-    useGetAllUserJoinedChatRooms: builder.query({
+    getMyChatRooms: builder.query({
       query: (params) => {
         return {
-          url: "me/chatroom",
+          url: "chatroom/me",
           method: "GET",
           params,
         };
@@ -45,11 +45,21 @@ export const chatRoomApi = createApi({
       }),
       invalidatesTags: ["Rooms"],
     }),
+
+    joinRoom: builder.mutation({
+      query: (body) => ({
+        url: "/chatroom/join",
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["Rooms"],
+    }),
   }),
 });
 
 export const {
   useCreateRoomMutation,
   useGetAllChatRoomsQuery,
-  useUseGetAllUserJoinedChatRoomsQuery,
+  useGetMyChatRoomsQuery,
+  useJoinRoomMutation,
 } = chatRoomApi;

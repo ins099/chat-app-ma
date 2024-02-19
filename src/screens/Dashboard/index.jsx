@@ -20,42 +20,21 @@ const Dashboard = (props) => {
     onPressLogout,
   } = useUser();
 
-
   const [visible, setVisible] = useState(false);
-  const [chats, setChats] = useState([]);
-  const [chatRooms, setChatRooms] = useState([]);
 
-  const { handleCreateRoom } = useDashboard();
+  const { handleCreateRoom, chats, chatRooms, handleJoinRoom } = useDashboard();
 
   const onPressAddIcon = () => setVisible(true);
-
-  useEffect(() => {
-    socket.on("connect", () => {
-      console.log("SOCKET CONNECTED ======", socket.connected); // true
-    });
-
-    socket.emit("getUserChatRooms", userId);
-    socket.on("userChatRooms", (userChatRooms) => {
-      setChats(userChatRooms);
-    });
-
-    socket.emit("getAllChatRooms", userId);
-    socket.on("allChatRooms", (allChatRooms) => {
-      setChatRooms(allChatRooms);
-    });
-
-    return () => {
-      socket.on("disconnect", () => {
-        console.log("SOCKET CONNECTED ======", socket.connected); // false
-      });
-    };
-  }, []);
 
   return (
     <SafeAreaWrapper containerStyle={styles.containerStyle}>
       <DashHeader onPressLogout={onPressLogout} userName={name} />
       <View style={styles.curvedContainer}>
-        <RoomList onPressAddIcon={onPressAddIcon} chatRooms={chatRooms} />
+        <RoomList
+          onPressAddIcon={onPressAddIcon}
+          chatRooms={chatRooms}
+          handleJoinRoom={handleJoinRoom}
+        />
         <ChatList chats={chats} />
       </View>
       <AddRoom
