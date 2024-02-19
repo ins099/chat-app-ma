@@ -42,9 +42,10 @@ const Inbox = (props) => {
       );
     });
     socket.on(`receiveNewMessage-${chatId}`, ({ msg }) => {
-      setMessages((previousMessages) =>
-        GiftedChat.append(previousMessages, msg)
-      );
+      if (msg[0].user != userId)
+        setMessages((previousMessages) =>
+          GiftedChat.append(previousMessages, msg)
+        );
     });
 
     // return () => socket.disconnect();
