@@ -7,7 +7,7 @@ import { TextNormal } from "../../../components/CustomTexts";
 import { ms } from "react-native-size-matters";
 
 const ChatHeader = (props) => {
-  const {} = props;
+  const {title} = props;
   const navigation = useNavigation();
   
   const onPressBack = () => {
@@ -25,7 +25,7 @@ const ChatHeader = (props) => {
         />
       </Pressable>
       <View style={styles.mainContainer}>
-        <TextNormal bold>Insaram Alam</TextNormal>
+        <TextNormal bold>{title}</TextNormal>
       </View>
     </View>
   );

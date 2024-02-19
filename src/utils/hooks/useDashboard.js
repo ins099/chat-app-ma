@@ -2,8 +2,10 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useCreateRoomMutation } from "../../redux/apis/chatroom.api";
 import { useUser } from "./useUser";
+import { useNavigation } from "@react-navigation/native";
 
 export const useDashboard = () => {
+  const navigation = useNavigation();
   const dispatch = useDispatch();
   const {
     user: { _id: userId },
@@ -24,6 +26,10 @@ export const useDashboard = () => {
             response?.error?.error,
         };
       }
+      navigation.navigate("Inbox", {
+        chatId: response.data.chatRoom._id,
+        chatName: name,
+      });
     } catch (error) {
       console.log("ERROR CREATING ROOM====", error);
     }

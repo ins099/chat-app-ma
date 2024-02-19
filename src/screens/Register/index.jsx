@@ -30,7 +30,7 @@ const Register = (props) => {
           <CustomInput
             control={control}
             rules={NAME_RULES}
-            name="full_name"
+            name="name"
             label="Full Name"
             placeholder="Enter your full name"
           />

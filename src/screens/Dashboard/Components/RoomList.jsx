@@ -26,7 +26,7 @@ const ROOM_LIST = [
 ];
 
 const RoomList = (props) => {
-  const { onPressAddIcon,chatRooms } = props;
+  const { onPressAddIcon, chatRooms } = props;
   const navigation = useNavigation();
 
   const onPressFindRoom = () => {
@@ -65,7 +65,7 @@ const RoomItem = (props) => {
     if (index === 0) {
       return onPressAddIcon();
     }
-    navigation.navigate("Inbox", { chatId: _id });
+    navigation.navigate("Inbox", { chatId: _id, chatName: name });
   };
 
   return (

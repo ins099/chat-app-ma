@@ -16,7 +16,7 @@ const socket = io(BASE_URL);
 const Dashboard = (props) => {
   const { navigation } = props;
   const {
-    user: { full_name, _id: userId },
+    user: { name, _id: userId },
     onPressLogout,
   } = useUser();
 
@@ -53,7 +53,7 @@ const Dashboard = (props) => {
 
   return (
     <SafeAreaWrapper containerStyle={styles.containerStyle}>
-      <DashHeader onPressLogout={onPressLogout} userName={full_name} />
+      <DashHeader onPressLogout={onPressLogout} userName={name} />
       <View style={styles.curvedContainer}>
         <RoomList onPressAddIcon={onPressAddIcon} chatRooms={chatRooms} />
         <ChatList chats={chats} />

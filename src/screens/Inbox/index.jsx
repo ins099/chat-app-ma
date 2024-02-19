@@ -1,57 +1,77 @@
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import React, { useCallback, useState } from "react";
-import SafeAreaWrapper from "../../components/Wrapper/SafeAreaWrapper";
+import React, { useCallback, useEffect, useState } from "react";
+import { Platform, StyleSheet } from "react-native";
 import { GiftedChat, Send } from "react-native-gifted-chat";
-import ChatHeader from "./components/ChatHeader";
-import Feather from "react-native-vector-icons/Feather";
 import { ms } from "react-native-size-matters";
+import Feather from "react-native-vector-icons/Feather";
+import { io } from "socket.io-client";
+import SafeAreaWrapper from "../../components/Wrapper/SafeAreaWrapper";
+import { BASE_URL } from "../../utils/constant";
+import { useUser } from "../../utils/hooks/useUser";
 import { COLORS } from "../../utils/theme";
+import ChatHeader from "./components/ChatHeader";
 
-const Inbox = () => {
-  const [messages, setMessages] = useState([
-    {
-      _id: 1,
-      text: "Hello developer",
-      createdAt: new Date(),
-      user: {
-        _id: 2,
-        name: "React Native",
-        avatar: "https://placeimg.com/140/140/any",
-      },
-    },
-  ]);
+const socket = io(BASE_URL);
+
+const Inbox = (props) => {
+  const {
+    route: { params },
+  } = props;
+
+  const chatId = params?.chatId;
+  const chatName = params?.chatName;
+  const {
+    user: { _id: userId, name },
+  } = useUser();
+
+  const [messages, setMessages] = useState([]);
 
   const onSend = useCallback((messages = []) => {
-    // console.log({ messages });
+    socket.emit("sendMessage", { chatId, message: messages[0], userId });
     setMessages((previousMessages) =>
-      GiftedChat.append(previousMessages, messages)
+      GiftedChat.append(messages, previousMessages)
     );
+  }, []);
+
+  useEffect(() => {
+    socket.on("connect", () => console.log("CONNECTED"));
+
+    socket.emit("getChatRoomChat", chatId);
+    socket.on(`receiveMessage-${chatId}`, ({ messages }) => {
+      setMessages((previousMessages) =>
+        GiftedChat.append(messages, previousMessages)
+      );
+    });
+    socket.on(`receiveNewMessage-${chatId}`, ({ msg }) => {
+      setMessages((previousMessages) =>
+        GiftedChat.append(previousMessages, msg)
+      );
+    });
+
+    // return () => socket.disconnect();
   }, []);
 
   return (
     <SafeAreaWrapper containerStyle={{ paddingHorizontal: 0 }}>
-      <ChatHeader />
+      <ChatHeader title={chatName} />
       <GiftedChat
         messages={messages}
         onSend={(messages) => onSend(messages)}
         user={{
-          _id: 1,
+          _id: userId,
+          name: name,
         }}
         renderAvatar={null}
+        inverted={false}
         containerStyle={styles.textInputContainerStyle}
         primaryStyle={{ alignItems: "center" }}
         textInputProps={{ style: styles.textInput }}
         renderSend={(props) => {
           return (
-            // <TouchableOpacity {...props} style={styles.sendContainer} onPress={()=>onSend(props)}>
-            // </TouchableOpacity>
-            <Send alwaysShowSend {...props} containerStyle={styles.sendContainer}>
+            <Send
+              alwaysShowSend
+              {...props}
+              containerStyle={styles.sendContainer}
+            >
               <Feather
                 name="send"
                 size={ms(23)}
