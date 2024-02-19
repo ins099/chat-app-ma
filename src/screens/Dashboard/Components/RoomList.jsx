@@ -1,4 +1,5 @@
 import {
+  Alert,
   FlatList,
   StyleSheet,
   Text,
@@ -12,6 +13,7 @@ import { ms, scale, vs } from "react-native-size-matters";
 import { TextBig, TextSmall } from "../../../components/CustomTexts";
 import { getInitials } from "../../../utils/helpers";
 import { useNavigation } from "@react-navigation/native";
+import { useUser } from "../../../utils/hooks/useUser";
 
 const ROOM_LIST = [
   { _id: "1", room_name: "Room 1" },
@@ -26,15 +28,33 @@ const ROOM_LIST = [
 ];
 
 const RoomList = (props) => {
-  const { onPressAddIcon, chatRooms } = props;
+  const { onPressAddIcon, chatRooms, handleJoinRoom } = props;
   const navigation = useNavigation();
+  const {
+    user: { _id: userId },
+  } = useUser();
 
   const onPressFindRoom = () => {
     navigation.navigate("Search");
   };
 
+  const onPressItem = (props) => {
+    const { index, users, name, _id } = props;
+    console.log("======",{users, userId});
+    if (index === 0) {
+      return onPressAddIcon();
+    } else if (users.find(i=>i == userId)) {
+      navigation.navigate("Inbox", { chatId: _id, chatName: name });
+    } else {
+      Alert.alert("Join Room?", `Do you want to join ${name}`, [
+        { text: "cancel", onPress: () => {} },
+        { text: "Join", onPress: () => handleJoinRoom(_id) },
+      ]);
+    }
+  };
+
   const renderItem = ({ item, index }) => {
-    return <RoomItem {...item} index={index} onPressAddIcon={onPressAddIcon} />;
+    return <RoomItem {...item} index={index} onPressItem={onPressItem} />;
   };
 
   return (
@@ -57,21 +77,12 @@ const RoomList = (props) => {
 };
 
 const RoomItem = (props) => {
-  const { name, _id, index, onPressAddIcon } = props;
-
-  const navigation = useNavigation();
-
-  const onPressItem = () => {
-    if (index === 0) {
-      return onPressAddIcon();
-    }
-    navigation.navigate("Inbox", { chatId: _id, chatName: name });
-  };
+  const { name, _id, index, onPressItem } = props;
 
   return (
     <TouchableOpacity
       style={[styles.roundItem, index === 0 && styles.addRoom]}
-      onPress={onPressItem}
+      onPress={() => onPressItem(props)}
       key={_id}
     >
       {index === 0 ? (
