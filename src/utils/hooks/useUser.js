@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 export const useUser = () => {
   const { user } = useSelector((store) => ({ user: store.userSlice }));
-  console.log({user})
   const dispatch = useDispatch();
 
   const onPressLogout = () => {

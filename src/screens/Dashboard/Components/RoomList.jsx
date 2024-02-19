@@ -14,9 +14,8 @@ import { getInitials } from "../../../utils/helpers";
 import { useNavigation } from "@react-navigation/native";
 
 const ROOM_LIST = [
-  { id: "0", room_name: "Room 0" },
-  { id: "1", room_name: "Room 1" },
-  { id: "2", room_name: "Room 2" },
+  { _id: "1", room_name: "Room 1" },
+  { _id: "2", room_name: "Room 2" },
   { id: "3", room_name: "Room 3" },
   { id: "4", room_name: "Room 4" },
   { id: "5", room_name: "Room 5" },
@@ -26,16 +25,16 @@ const ROOM_LIST = [
   { id: "9", room_name: "Room 9" },
 ];
 
-const renderItem = ({ item, index }) => {
-  return <RoomItem {...item} index={index} />;
-};
-
 const RoomList = (props) => {
-  const {} = props;
+  const { onPressAddIcon,chatRooms } = props;
   const navigation = useNavigation();
 
   const onPressFindRoom = () => {
     navigation.navigate("Search");
+  };
+
+  const renderItem = ({ item, index }) => {
+    return <RoomItem {...item} index={index} onPressAddIcon={onPressAddIcon} />;
   };
 
   return (
@@ -45,7 +44,7 @@ const RoomList = (props) => {
       </TextSmall>
       <View style={styles.container}>
         <FlatList
-          data={ROOM_LIST}
+          data={[{ _id: "0", name: "zero" }, ...chatRooms]}
           keyExtractor={(item) => item.id}
           renderItem={renderItem}
           horizontal
@@ -58,19 +57,22 @@ const RoomList = (props) => {
 };
 
 const RoomItem = (props) => {
-  const { room_name, id, index } = props;
+  const { name, _id, index, onPressAddIcon } = props;
 
   const navigation = useNavigation();
 
   const onPressItem = () => {
-    navigation.navigate("Inbox", { chatId: id });
+    if (index === 0) {
+      return onPressAddIcon();
+    }
+    navigation.navigate("Inbox", { chatId: _id });
   };
 
   return (
     <TouchableOpacity
       style={[styles.roundItem, index === 0 && styles.addRoom]}
       onPress={onPressItem}
-      key={id}
+      key={_id}
     >
       {index === 0 ? (
         <MaterialCommunityIcons
@@ -81,7 +83,7 @@ const RoomItem = (props) => {
         />
       ) : (
         <TextBig bold textStyle={styles.initialText}>
-          {getInitials(room_name)}
+          {getInitials(name)}
         </TextBig>
       )}
     </TouchableOpacity>

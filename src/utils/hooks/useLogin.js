@@ -20,7 +20,7 @@ export const useLogin = () => {
       console.log("STING RESPONSE=======", JSON.stringify(response, null, 2));
       if (response.error) {
         setError("email", { message: " " });
-        setError("password", { message: response.error.data.message });
+        setError("password", { message: response.error?.data?.message || response?.error?.error });
         throw new Error(JSON.stringify(response));
       }
       clearErrors();

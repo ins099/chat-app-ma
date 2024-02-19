@@ -3,6 +3,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { persistReducer, persistStore } from "redux-persist";
 import { authApi } from "./apis/auth.api";
 import { appReducers } from "./reducers";
+import { chatRoomApi } from "./apis/chatroom.api";
 
 const persistConfig = {
   key: "root",
@@ -13,19 +14,21 @@ const persistConfig = {
 };
 
 const rootReducer = (state, action) => {
-  if (action.type === 'LOGOUT') {
+  if (action.type === "LOGOUT") {
     // AsyncStorage.removeItem('persist:root')
-    return appReducers(undefined, action)
+    return appReducers(undefined, action);
   }
-  return appReducers(state, action)
-}
+  return appReducers(state, action);
+};
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(authApi.middleware),
+    getDefaultMiddleware()
+      .concat(authApi.middleware)
+      .concat(chatRoomApi.middleware),
 });
 
 export const persistor = persistStore(store);

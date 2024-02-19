@@ -1,7 +1,6 @@
-import React from "react";
-import { useLoginMutation, useRegisterMutation } from "../../redux/apis/auth.api";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
+import { useRegisterMutation } from "../../redux/apis/auth.api";
 import {
   setAccessToken,
   setUserToReducer,
@@ -21,7 +20,7 @@ export const useRegister = () => {
       if (response.error) {
         setError("first_name", { message: " " });
         setError("email", { message: " " });
-        setError("password", { message: response.error.data.message });
+        setError("password", { message: response.error?.data?.message || response?.error?.error });
         throw new Error(JSON.stringify(response));
       }
       clearErrors();
